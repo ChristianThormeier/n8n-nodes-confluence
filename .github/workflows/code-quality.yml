@@ -1,0 +1,43 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check code formatting
+        run: |
+          echo "Checking code formatting with Prettier..."
+          pnpm format:check
+
+      - name: Run ESLint
+        run: |
+          echo "Running ESLint checks..."
+          pnpm lint
+
+      - name: Build check
+        run: |
+          echo "Checking if project builds successfully..."
+          pnpm build
