@@ -13,6 +13,10 @@ Wenn Sie Änderungen an der `package.json` (z.B. Version) oder am Quellcode vorn
 - **📄 Page Operations**: CRUD Operationen für Confluence Pages
 - **🔍 Search Functionality**: Durchsuchen von Confluence Spaces und Pages
 - **🔧 Enhanced Error Handling**: Robuste Fehlerbehandlung für API-Calls
+- **🔒 Security Updates**: Behebung aller kritischen Sicherheitslücken in Dependencies
+  - axios: 1.6.7 → 1.12.0+
+  - form-data: 4.0.0 → 4.0.4+
+  - cross-spawn, braces, micromatch und weitere Packages aktualisiert
 
 ## Voraussetzungen
 
@@ -43,11 +47,13 @@ pnpm build
 ### 2. Paket erstellen
 
 ```bash
-# npm-Paket erstellen (Version vorher in package.json anheben)
-npm pack
+# pnpm-Paket erstellen (Version vorher in package.json anheben)
+pnpm pack
 ```
 
 Dies erstellt eine `.tgz` Datei, z.B. `bitovi-n8n-nodes-confluence-0.1.6.tgz`
+
+**Hinweis:** Bei pnpm wird die Datei als `bitovi-n8n-nodes-confluence-0.1.6.tgz` erstellt.
 
 ### 3. OpenShift Login und Namespace
 
@@ -226,9 +232,11 @@ oc exec <POD_NAME> -- sh -c "env | grep N8N_CUSTOM_EXTENSIONS"
 
 **Lösung:**
 ```bash
-# Mit temporärem Cache installieren
+# Mit temporärem Cache installieren (falls npm verwendet wird)
 oc exec <POD_NAME> -- sh -c "cd /home/node/.n8n && npm install /tmp/bitovi-n8n-nodes-confluence-0.1.6.tgz --cache /tmp/npm-cache"
 ```
+
+**Hinweis:** Das Projekt verwendet jetzt pnpm statt npm. Die direkte Entpackung (siehe Schritt 5a) ist die empfohlene Methode.
 
 ## Node-Struktur
 
